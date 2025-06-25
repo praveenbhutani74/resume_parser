@@ -1,18 +1,18 @@
 package com.resume.resume_parser.controller;
 
 import com.resume.resume_parser.dto.UserDTO;
+import com.resume.resume_parser.dto.UserDTORequest;
+import com.resume.resume_parser.dto.UserLoginRequest;
 import com.resume.resume_parser.response.Response;
 import com.resume.resume_parser.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Tag(name = "User APIs", description = "Endpoints for managing users")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 public class UserController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class UserController {
     
     
     @PostMapping("/register")
-    public Response<UserDTO> register(@RequestBody UserDTO userDTO) {
+    public Response<UserDTO> register(@RequestBody UserDTORequest userDTO) {
     	Response<UserDTO> response = new Response<>();
     	response.setPayload(userService.register(userDTO));
     	response.setSuccess(true);
@@ -29,6 +29,14 @@ public class UserController {
        return response;
     }
 
+    @PostMapping("/login")
+    public Response<UserDTO> login(@RequestBody UserLoginRequest loginRequest) {
+    	Response<UserDTO> response = new Response<>();
+    	response.setPayload(userService.login(loginRequest));
+    	response.setSuccess(true);
+    	response.setMessage("User login successfully");
+       return response;
+    }
 
     
 }

@@ -1,14 +1,21 @@
 package com.resume.resume_parser.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.resume.resume_parser.Entity.User;
 import com.resume.resume_parser.dto.UserDTO;
+import com.resume.resume_parser.dto.UserDTORequest;
+import com.resume.resume_parser.dto.UserLoginRequest;
 import com.resume.resume_parser.exception.EmailAlreadyExistsException;
 import com.resume.resume_parser.repository.UserRepository;
 import com.resume.resume_parser.service.UserService;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,10 +25,13 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	
 	@Override
-	public UserDTO register(UserDTO userDTO) {
+	public UserDTO register(UserDTORequest userDTO) {
 		userRepository.findByEmail(userDTO.getEmail())
 	    .ifPresent(user -> {
 	        throw new EmailAlreadyExistsException("Email already registered");
@@ -40,7 +50,23 @@ public class UserServiceImpl implements UserService {
 
 	    return responseDTO;
 	}
-	
-	
 
+
+	@Override
+	public UserDTO login(UserLoginRequest loginRequest) {
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+		Authentication authentication = authenticationManager.authenticate(authenticationToken);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		 User user = userRepository.findByEmail(loginRequest.getEmail())
+		            .orElseThrow(() -> new EmailAlreadyExistsException("User not found"));
+		 
+		 UserDTO responseDTO = new UserDTO();
+		    responseDTO.setId(user.getId());
+		    responseDTO.setEmail(user.getEmail());
+		    responseDTO.setUserName(user.getUserName()); 
+
+		    return responseDTO;
+		
+	}
 }
