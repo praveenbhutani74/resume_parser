@@ -5,8 +5,15 @@ public class UserDTO {
     private String userName;
     private String email;
     private String password;
+    private String token;
 
-    // Getters and Setters
+    public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	// Getters and Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
