@@ -5,6 +5,8 @@ import com.resume.resume_parser.dto.UserDTORequest;
 import com.resume.resume_parser.dto.UserLoginRequest;
 import com.resume.resume_parser.response.Response;
 import com.resume.resume_parser.service.UserService;
+import com.resume.resume_parser.util.JWTUtil;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    
+
     
     @PostMapping("/register")
     public Response<UserDTO> register(@RequestBody UserDTORequest userDTO) {
