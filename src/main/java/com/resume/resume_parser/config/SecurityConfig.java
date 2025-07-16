@@ -60,23 +60,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Order(Ordered.HIGHEST_PRECEDENCE)
-    public CorsFilter corsFilter() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of(
-                "http://resumeparser-n8f2zihe.b4a.run",
-                "https://resumeparser-n8f2zihe.b4a.run",
-                "http://localhost:3000" // optional for local testing
-        ));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setMaxAge(3600L);
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public CorsFilter corsFilter() {
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
+    config.setAllowedOrigins(List.of(
+        "http://resumeparser-n8f2zihe.b4a.run",
+        "https://resumeparser-n8f2zihe.b4a.run",
+        "http://localhost:3000", 
+        "https://resume-parser-frontend-eop3.vercel.app" 
+    ));
+
+    config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
+    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    config.setMaxAge(3600L);
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
+    return new CorsFilter(source);
+}
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
