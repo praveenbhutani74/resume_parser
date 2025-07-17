@@ -27,8 +27,8 @@ public class MediaController {
             HttpServletResponse response) {
 
         setCorsHeaders(request, response);
-        Response<Map<String, String>> resp = new Response<>();
 
+        Response<Map<String, String>> resp = new Response<>();
         try {
             String key = purpose + "/" + System.currentTimeMillis();
             String preSignedUrl = S3Utility.signBucket(key, contentType);
@@ -67,11 +67,12 @@ public class MediaController {
         } else {
             response.setHeader("Access-Control-Allow-Origin", "*");
         }
-        // List all methods and headers you need
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
+        // Correct: No spaces after commas!
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS,HEAD");
+        // List all custom headers your browser clients might send:
+        response.setHeader("Access-Control-Allow-Headers", "Authorization,Content-Type,Accept");
         response.setHeader("Access-Control-Max-Age", "3600");
-        // Only include if you use cookies or Authorization (recommended if using JWT):
+        // Uncomment below ONLY if you use credentials
         // response.setHeader("Access-Control-Allow-Credentials", "true");
     }
 }
