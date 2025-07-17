@@ -69,7 +69,8 @@ public CorsFilter corsFilter() {
         "http://resumeparser-n8f2zihe.b4a.run",
         "https://resumeparser-n8f2zihe.b4a.run",
         "http://localhost:3000", 
-        "https://resume-parser-frontend-eop3.vercel.app" 
+        "https://resume-parser-frontend-eop3.vercel.app",
+        "https://ai-resume-parser-silk.vercel.app/"
     ));
 
     config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
