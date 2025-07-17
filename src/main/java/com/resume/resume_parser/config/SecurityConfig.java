@@ -32,19 +32,29 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
     
+    // @Bean
+    // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    //     http.csrf().disable()
+    //         .cors().and()
+    //         .formLogin().disable()
+    //         .authorizeRequests()
+    //             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+    //             .antMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+    //             .anyRequest().authenticated()
+    //         .and()
+    //         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        
+    //     http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+    //     return http.build();
+    // }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .cors().and()
-            .formLogin().disable()
             .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .anyRequest().authenticated()
-            .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .anyRequest().permitAll();  // Allow ALL requests
         
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     
